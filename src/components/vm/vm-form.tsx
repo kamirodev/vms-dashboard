@@ -51,7 +51,7 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center p-4 border-b">
-                    <h2 className="text-lg font-medium">{vm ? "Edit Virtual Machine" : "Create Virtual Machine"}</h2>
+                    <h2 className="text-lg font-medium">{vm ? "Ediar Maquina Virtual" : "Crear Maquina Virtual"}</h2>
                     <button onClick={onCancel} className="text-gray-400 hover:text-gray-500">
                         <X size={20} />
                         <span className="sr-only">Close</span>
@@ -61,7 +61,7 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
                 <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Name
+                            Nombre VM
                         </label>
                         <input
                             id="name"
@@ -114,7 +114,7 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
 
                     <div>
                         <label htmlFor="disk" className="block text-sm font-medium text-gray-700">
-                            Disk (GB)
+                            Disco (GB)
                         </label>
                         <input
                             id="disk"
@@ -123,8 +123,8 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
                             max="1000"
                             {...register("disk", {
                                 required: "Disk is required",
-                                min: { value: 10, message: "Minimum 10 GB" },
-                                max: { value: 1000, message: "Maximum 1000 GB" },
+                                min: { value: 10, message: "Minimo 10 GB" },
+                                max: { value: 1000, message: "Maximo 1000 GB" },
                                 valueAsNumber: true,
                             })}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -134,14 +134,14 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
 
                     <div>
                         <label htmlFor="os" className="block text-sm font-medium text-gray-700">
-                            Operating System
+                            Sistema Operativo
                         </label>
                         <select
                             id="os"
                             {...register("os", { required: "OS is required" })}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         >
-                            <option value="">Select OS</option>
+                            <option value="">Seleccionar</option>
                             {OS_OPTIONS.map((os) => (
                                 <option key={os} value={os}>
                                     {os}
@@ -153,7 +153,7 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
 
                     <div>
                         <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-                            Status
+                            Estado
                         </label>
                         <select
                             id="status"
@@ -175,14 +175,14 @@ export default function VMForm({ vm, onSubmit, onCancel, isLoading }: VMFormProp
                             onClick={onCancel}
                             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Cancel
+                            Cancelar
                         </button>
                         <button
                             type="submit"
                             disabled={isLoading}
                             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                         >
-                            {isLoading ? "Saving..." : "Save"}
+                            {isLoading ? "Guardnado..." : "Guardar"}
                         </button>
                     </div>
                 </form>

@@ -8,8 +8,8 @@ export type VM = {
     disk: number
     os: string
     status: VMStatus
-    createdAt: string
-    updatedAt: string
+    created_at: string
+    updated_at: string
 }
 
 export type CreateVMDto = {

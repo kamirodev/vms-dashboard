@@ -11,11 +11,9 @@ import { createVM, deleteVM, getVMs, updateVM } from "@/lib/api"
 import type { CreateVMDto, VM } from "@/types/vm"
 import VMTable from "@/components/vm/vm-table"
 import VMForm from "@/components/vm/vm-form"
-//import DeleteDialog from "@/components/delete-dialog"
+import DeleteDialog from "@/components/delete-dialog"
 import { Plus } from "lucide-react"
-import { getAdminLayout } from "@/layouts/admin-layout"
 import { getClientLayout } from "@/layouts/client-layout"
-import type { ReactNode } from "react"
 
 export default function DashboardPage() {
     const { user } = useAuth()
@@ -41,23 +39,22 @@ export default function DashboardPage() {
     const vms = data|| []
     const totalPages = data?.meta?.totalPages || 1
 
-    // Handle WebSocket events
     useEffect(() => {
         if (!socket) return
 
         const handleVMCreated = (vm: VM) => {
             queryClient.invalidateQueries({ queryKey: ["vms"] })
-            showToast(`VM "${vm.name}" has been created`, "success")
+            showToast(`VM "${vm.name}" Se creó correctamente`, "success")
         }
 
         const handleVMUpdated = (vm: VM) => {
             queryClient.invalidateQueries({ queryKey: ["vms"] })
-            showToast(`VM "${vm.name}" has been updated`, "info")
+            showToast(`VM "${vm.name}" Se actualizó correctmante`, "info")
         }
 
         const handleVMDeleted = (vm: VM) => {
             queryClient.invalidateQueries({ queryKey: ["vms"] })
-            showToast(`VM "${vm.name}" has been deleted`, "info")
+            showToast(`VM "${vm.name}" Se eliminó`, "success")
         }
 
         socket.on("vm:created", handleVMCreated)
@@ -71,30 +68,20 @@ export default function DashboardPage() {
         }
     }, [socket, queryClient, showToast])
 
-    // Handle search
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        setSearch(searchInput)
-        setPage(1)
-    }
-
-    // Handle create VM
     const handleCreateVM = async (data: CreateVMDto) => {
         setIsSubmitting(true)
         try {
             await createVM(data)
             setShowCreateForm(false)
             refetch()
-            showToast(`VM "${data.name}" created successfully`, "success")
         } catch (error) {
             console.error("Failed to create VM:", error)
-            showToast("Failed to create VM", "error")
+            showToast("Hubo un error al crear la VM", "error")
         } finally {
             setIsSubmitting(false)
         }
     }
 
-    // Handle edit VM
     const handleEditVM = async (data: CreateVMDto) => {
         if (!editingVM) return
 
@@ -103,28 +90,26 @@ export default function DashboardPage() {
             await updateVM(editingVM.id, data)
             setEditingVM(null)
             refetch()
-            showToast(`VM "${data.name}" updated successfully`, "success")
         } catch (error) {
             console.error("Failed to update VM:", error)
-            showToast("Failed to update VM", "error")
+            showToast("Hubo un error al actualizar la VM", "error")
         } finally {
             setIsSubmitting(false)
         }
     }
 
-    // Handle delete VM
     const handleDeleteVM = async () => {
         if (!deletingVM) return
 
         setIsSubmitting(true)
         try {
             await deleteVM(deletingVM.id)
-            showToast(`VM "${deletingVM.name}" deleted successfully`, "success")
+            showToast(`VM "${deletingVM.name}" Se eliminó correctamente`, "success")
             setDeletingVM(null)
             refetch()
         } catch (error) {
             console.error("Failed to delete VM:", error)
-            showToast("Failed to delete VM", "error")
+            showToast("Hubo un error al eliminar la VM", "error")
         } finally {
             setIsSubmitting(false)
         }
@@ -133,7 +118,7 @@ export default function DashboardPage() {
     return (
         <>
             <div className="sm:flex sm:items-center sm:justify-between">
-                <h1 className="text-2xl font-semibold text-gray-900">Virtual Machines</h1>
+                <h1 className="text-2xl font-semibold text-gray-900">Maquinas Virtuales</h1>
 
                 {isAdmin && (
                     <button
@@ -141,27 +126,9 @@ export default function DashboardPage() {
                         className="mt-3 sm:mt-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         <Plus className="mr-2 h-4 w-4" />
-                        Create VM
+                        Crear VM
                     </button>
                 )}
-            </div>
-
-            <div className="mt-4">
-                <form onSubmit={handleSearch} className="flex w-full max-w-md">
-                    <input
-                        type="text"
-                        placeholder="Search by name..."
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        className="flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                    <button
-                        type="submit"
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-r-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Search
-                    </button>
-                </form>
             </div>
 
             <div className="mt-4 bg-white shadow overflow-hidden sm:rounded-md">
@@ -222,25 +189,22 @@ export default function DashboardPage() {
                 )}
             </div>
 
-            {/* Create VM Form */}
             {showCreateForm && (
                 <VMForm onSubmit={handleCreateVM} onCancel={() => setShowCreateForm(false)} isLoading={isSubmitting} />
             )}
 
-            {/* Edit VM Form */}
             {editingVM && (
                 <VMForm vm={editingVM} onSubmit={handleEditVM} onCancel={() => setEditingVM(null)} isLoading={isSubmitting} />
             )}
 
-            {/* Delete VM Dialog */}
-            {/**deletingVM && (
+            {deletingVM && (
                 <DeleteDialog
                     vm={deletingVM}
                     onConfirm={handleDeleteVM}
                     onCancel={() => setDeletingVM(null)}
                     isLoading={isSubmitting}
                 />
-            )**/}
+            )}
         </>
     )
 }

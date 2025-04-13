@@ -29,11 +29,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter()
 
     useEffect(() => {
-        // Check if user is logged in on mount
         const token = localStorage.getItem("token")
         if (token) {
             try {
-                // Decodificar el token para obtener la información del usuario
                 const decoded = jwtDecode<any>(token)
 
                 // Comprobar si el token ha expirado
@@ -45,7 +43,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     return
                 }
 
-                // Construir objeto de usuario desde el token decodificado
                 const userData: User = {
                     id: decoded.sub || decoded.id,
                     email: decoded.email,
@@ -80,11 +77,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const data = await response.json()
             localStorage.setItem("token", data.access_token)
 
-            // Decodificar el token para obtener información del usuario
             try {
                 const decoded = jwtDecode<any>(data.access_token)
 
-                // Construir objeto de usuario desde el token decodificado
                 const userData: User = {
                     id: decoded.sub || decoded.id,
                     email: decoded.email,

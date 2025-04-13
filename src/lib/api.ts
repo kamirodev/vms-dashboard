@@ -89,7 +89,7 @@ export async function createVM(data: CreateVMDto) {
 
 export async function updateVM(id: string, data: UpdateVMDto) {
     const response = await fetch(`${API_URL}/vms/${id}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             ...(await getAuthHeader()),

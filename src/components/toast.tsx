@@ -28,10 +28,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
         setToasts((prev) => [...prev, newToast])
 
-        // Auto-remove toast after 5 seconds
+        // 10 segundos
         setTimeout(() => {
             setToasts((prev) => prev.filter((toast) => toast.id !== id))
-        }, 5000)
+        }, 10000)
     }
 
     const removeToast = (id: string) => {
@@ -55,7 +55,6 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         <ToastContext.Provider value={{ showToast }}>
             {children}
 
-            {/* Toast container */}
             <div className="fixed bottom-0 right-0 p-4 space-y-2 z-50">
                 {toasts.map((toast) => (
                     <div

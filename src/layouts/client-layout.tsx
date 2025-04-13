@@ -15,9 +15,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <Navbar />
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <div className="px-4 sm:px-0">
-                    <div className="mb-6">
-                        <div className="bg-green-600 text-white px-4 py-2 rounded-md inline-block text-sm">Client Dashboard</div>
-                    </div>
                     {children}
                 </div>
             </main>

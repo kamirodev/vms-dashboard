@@ -25,16 +25,16 @@ export default function Navbar() {
                             <>
                                 <div className="flex items-center space-x-2">
                                     <div className={`h-2 w-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}></div>
-                                    <span className="text-sm text-gray-500">{isConnected ? "Connected" : "Disconnected"}</span>
+                                    <span className="text-sm text-gray-500">{isConnected ? "Conectado" : "Desconectados"}</span>
                                 </div>
 
                                 <div className="text-sm text-gray-700">
                                     <span className="font-medium">{user.name}</span>
-                                    <span className="ml-1 px-2 py-1 text-xs rounded-full bg-gray-100">{user.role}</span>
+                                    <span className="ml-1 px-2 py-1 text-xs rounded-full bg-gray-100">{user.role == "Administrator" ? "Administrador" : "Cliente"}</span>
                                 </div>
 
                                 <button onClick={logout} className="px-3 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
-                                    Logout
+                                    Cerrar sesión
                                 </button>
                             </>
                         )}
@@ -60,7 +60,7 @@ export default function Navbar() {
                             <div className="px-4 py-2 space-y-3">
                                 <div className="flex items-center space-x-2">
                                     <div className={`h-2 w-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}></div>
-                                    <span className="text-sm text-gray-500">{isConnected ? "Connected" : "Disconnected"}</span>
+                                    <span className="text-sm text-gray-500">{isConnected ? "Conectado" : "Desconectado"}</span>
                                 </div>
 
                                 <div className="text-sm text-gray-700">
@@ -72,7 +72,7 @@ export default function Navbar() {
                                     onClick={logout}
                                     className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
                                 >
-                                    Logout
+                                    Cerrar sesión
                                 </button>
                             </div>
                         )}

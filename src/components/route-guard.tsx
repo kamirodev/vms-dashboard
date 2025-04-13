@@ -17,20 +17,20 @@ export function RouteGuard({ children, requiredRole }: RouteGuardProps) {
         // No hacer nada durante la carga
         if (isLoading) return
 
-        // Redirigir a login si no está autenticado
+        // Redirigir a login si no hay seison
         if (!isAuthenticated) {
             router.push("/login")
             return
         }
 
-        // Verificar rol si se especifica
+        // Verifica rol
         if (requiredRole && user?.role !== requiredRole) {
             router.push("/dashboard")
             return
         }
     }, [isLoading, isAuthenticated, router, user, requiredRole])
 
-    // Mostrar spinner durante la carga
+    // Spinner
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -39,11 +39,10 @@ export function RouteGuard({ children, requiredRole }: RouteGuardProps) {
         )
     }
 
-    // No mostrar nada hasta que la autenticación esté completa
+    // No mostrar nada hasta que verificar
     if (!isAuthenticated || (requiredRole && user?.role !== requiredRole)) {
         return null
     }
 
-    // Renderizar hijos cuando todo está correcto
     return <>{children}</>
 }
