@@ -6,7 +6,7 @@ import { useEffect, ReactNode } from "react"
 
 type RouteGuardProps = {
     children: ReactNode
-    requiredRole?: "ADMIN" | "CLIENT"
+    requiredRole?: "Administrator" | "Client"
 }
 
 export function RouteGuard({ children, requiredRole }: RouteGuardProps) {

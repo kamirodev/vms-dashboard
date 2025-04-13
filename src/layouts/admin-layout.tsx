@@ -27,7 +27,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
 export const getAdminLayout = (page: React.ReactNode) => {
     return (
-        <RouteGuard requiredRole="ADMIN">
+        <RouteGuard requiredRole="Administrator">
             <AdminLayout>{page}</AdminLayout>
         </RouteGuard>
     )

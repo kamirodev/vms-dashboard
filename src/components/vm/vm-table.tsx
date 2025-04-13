@@ -13,7 +13,7 @@ type VMTableProps = {
 
 export default function VMTable({ vms, isLoading, onEdit, onDelete }: VMTableProps) {
     const { user } = useAuth()
-    const isAdmin = user?.role === "ADMIN"
+    const isAdmin = user?.role === "Administrator"
 
     const getStatusColor = (status: VMStatus) => {
         switch (status) {
