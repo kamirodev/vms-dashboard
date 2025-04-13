@@ -17,6 +17,7 @@ const red_hat_display = Red_Hat_Display({
   variable: "--font-red-hat-display",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
+
 const queryClient = new QueryClient()
 
 type ComponentWithLayout = AppProps['Component'] & {
@@ -24,9 +25,11 @@ type ComponentWithLayout = AppProps['Component'] & {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
-
   const ComponentWithLayout = Component as ComponentWithLayout
-  const getLayout = ComponentWithLayout.getLayout || ((page: ReactNode) => page)
+
+  const pageWithLayout = ComponentWithLayout.getLayout ?
+    ComponentWithLayout.getLayout(<Component {...pageProps} />) :
+    <Component {...pageProps} />
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -34,14 +37,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <WebSocketProvider>
           <ToastProvider>
             <div className={red_hat_display.className}>
-              {getLayout(
-                <Component {...pageProps} />
-              )}
+              {pageWithLayout}
             </div>
           </ToastProvider>
         </WebSocketProvider>
       </AuthProvider>
     </QueryClientProvider>
-
   )
 }

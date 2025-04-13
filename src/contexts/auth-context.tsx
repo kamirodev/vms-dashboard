@@ -1,15 +1,16 @@
 "use client"
 
 import type React from "react"
-
 import { createContext, useContext, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { jwtDecode } from "jwt-decode"
+
 
 type User = {
     id: string
     email: string
-    name: string
-    role: "ADMIN" | "CLIENT"
+    name?: string
+    role: "Administrator" | "Client"
 }
 
 type AuthContextType = {
@@ -31,34 +32,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Check if user is logged in on mount
         const token = localStorage.getItem("token")
         if (token) {
-            fetchUserData(token)
-        } else {
-            setIsLoading(false)
-        }
-    }, [])
+            try {
+                // Decodificar el token para obtener la información del usuario
+                const decoded = jwtDecode<any>(token)
 
-    const fetchUserData = async (token: string) => {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+                // Comprobar si el token ha expirado
+                const currentTime = Date.now() / 1000
+                if (decoded.exp && decoded.exp < currentTime) {
+                    // Token expirado
+                    localStorage.removeItem("token")
+                    setIsLoading(false)
+                    return
+                }
 
-            if (response.ok) {
-                const userData = await response.json()
+                // Construir objeto de usuario desde el token decodificado
+                const userData: User = {
+                    id: decoded.sub || decoded.id,
+                    email: decoded.email,
+                    role: decoded.role
+                }
+
                 setUser(userData)
-            } else {
-                // Token is invalid
+            } catch (error) {
+                console.error("Invalid token:", error)
                 localStorage.removeItem("token")
             }
-        } catch (error) {
-            console.error("Failed to fetch user data:", error)
-            localStorage.removeItem("token")
-        } finally {
-            setIsLoading(false)
         }
-    }
+
+        setIsLoading(false)
+    }, [])
 
     const login = async (email: string, password: string) => {
         setIsLoading(true)
@@ -78,10 +80,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const data = await response.json()
             localStorage.setItem("token", data.access_token)
 
-            // Fetch user data
-            await fetchUserData(data.access_token)
+            // Decodificar el token para obtener información del usuario
+            try {
+                const decoded = jwtDecode<any>(data.access_token)
 
-            router.push("/dashboard")
+                // Construir objeto de usuario desde el token decodificado
+                const userData: User = {
+                    id: decoded.sub || decoded.id,
+                    email: decoded.email,
+                    role: decoded.role
+                }
+
+                setUser(userData)
+                router.push("/dashboard")
+            } catch (error) {
+                console.error("Failed to decode token:", error)
+                throw new Error("Invalid token format")
+            }
         } catch (error) {
             console.error("Login failed:", error)
             throw error
