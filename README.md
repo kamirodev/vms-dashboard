@@ -58,6 +58,12 @@ yarn start
 Alojado en [Vercel](https://vercel.com)
 - URL del proyecto: (https://vms-dashboard-eight.vercel.app)
 
+## Credenciales de Acceso
+- user: kamirodev.co@gmail.com
+- password: Ale123.
+
+Dentro del backend [Github]([https://vercel.com](https://github.com/kamirodev/vms-api/blob/main/src/prisma/seed.ts)) hay mas usuarios que se crearon.
+
 ## Características Adicionales
 - Autenticación de rutas
 - Manejo de roles (Admin/Cliente)
