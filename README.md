@@ -62,7 +62,7 @@ Alojado en [Vercel](https://vercel.com)
 - user: kamirodev.co@gmail.com
 - password: Ale123.
 
-Dentro del backend [Github]([https://vercel.com](https://github.com/kamirodev/vms-api/blob/main/src/prisma/seed.ts)) hay mas usuarios que se crearon.
+Dentro del backend [Github](https://github.com/kamirodev/vms-api/blob/main/src/prisma/seed.ts) hay mas usuarios que se crearon.
 
 ## Características Adicionales
 - Autenticación de rutas
